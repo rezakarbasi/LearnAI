@@ -33,12 +33,13 @@ test_im = test_im.astype('float32')/255
 
 # second : to use softmax classification we shold have n*10 array then categorize labels too
 train_label = ku.to_categorical(tr_label)
-test_label = ku.to_categorical(te_plot(history.history)plot(history.history)label)
+test_label = ku.to_categorical(te_label)
 
 # bulid the model from sequential
 nn = models.Sequential()
 # add first layer and configure hidden layer to 512 neurons and set it's activation function
-nn.add(layers.Dense(512, activation='relu', input_shape=(28*28,),kernel_regularizer=regularizers.l2(0.01)))
+nn.add(layers.Dense(512, activation='relu', input_shape=(
+    28*28,), kernel_regularizer=regularizers.l2(0.01)))
 # add final layer and set it to softmax layer
 nn.add(layers.Dense(10, activation='softmax'))
 
@@ -47,8 +48,16 @@ nn.compile(optimizer='rmsprop', loss='categorical_crossentropy',
            metrics=['accuracy'])
 
 # finally the fit function
-history=nn.fit(train_im, train_label, epochs=5, batch_size=120)
+history = nn.fit(train_im, train_label, validation_data=(
+    test_im, test_label), epochs=50, batch_size=120)
 
 # in the end evaluate the trained network by test dataset
 print(nn.evaluate(test_im, test_label))
-# plot(history.)
+
+# show the results
+train_loss = history.history['loss']
+test_loss = history.history['val_loss']
+x = list(range(1, len(test_loss) + 1))
+plt.plot(x, test_loss, color='red', label='test loss')
+plt.plot(x, train_loss, label='traning loss')
+plt.show()
