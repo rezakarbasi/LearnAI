@@ -1,17 +1,12 @@
-import tensorflow as tf
+from keras.datasets import mnist
+import keras.utils.np_utils as ku
+import keras.models as models
+import keras.layers as layers
+from keras import regularizers
 import numpy as np
-
-from tensorflow import keras
 import matplotlib.pyplot as plt
 
-import mnist as dataset
-
-
-train_images = dataset.train_images()
-train_labels = dataset.train_labels()
-
-test_images = dataset.test_images()
-test_labels = dataset.test_labels()
+(tr_im, tr_label), (te_im, te_label) = mnist.load_data()
 
 class_names = ['0', '1', '2', '3', '4',
                '5', '6', '7', '8', '9']
@@ -22,6 +17,6 @@ for i in range(25):
     plt.xticks([])
     plt.yticks([])
     plt.grid(False)
-    plt.imshow(train_images[i], cmap=plt.cm.binary)
-    plt.xlabel(class_names[train_labels[i]])
+    plt.imshow(tr_im[i], cmap=plt.cm.binary)
+    plt.xlabel(class_names[tr_label[i]])
 plt.show()
