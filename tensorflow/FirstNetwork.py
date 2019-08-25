@@ -20,3 +20,34 @@ for i in range(25):
     plt.imshow(tr_im[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[tr_label[i]])
 plt.show()
+
+# preprocess the data
+
+# first reshape the inputs to a 1D array
+train_im = tr_im.reshape((60000, 28*28))
+train_im = train_im.astype('float32')/255
+
+test_im = te_im.reshape((10000, 28*28))
+test_im = test_im.astype('float32')/255
+
+
+# second : to use softmax classification we shold have n*10 array then categorize labels too
+train_label = ku.to_categorical(tr_label)
+test_label = ku.to_categorical(te_label)
+
+# bulid the model from sequential
+nn = models.Sequential()
+# add first layer and configure hidden layer to 512 neurons and set it's activation function
+nn.add(layers.Dense(512, activation='relu', input_shape=(28*28,)))
+# add final layer and set it to softmax layer
+nn.add(layers.Dense(10, activation='softmax'))
+
+# set optimizer optimizer parameters
+nn.compile(optimizer='rmsprop', loss='categorical_crossentropy',
+           metrics=['accuracy'])
+
+# finally the fit function
+nn.fit(train_im, train_label, epochs=5, batch_size=120)
+
+# in the end evaluate the trained network by test dataset
+print(nn.evaluate(test_im, test_label))
