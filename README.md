@@ -1,4 +1,5 @@
 ### LearnAI
 
-this is my project before MSC to learn basics of AI
+I created this repo to implement some algorithms .
+
 my API is VSCode
